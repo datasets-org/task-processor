@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/datasets/task-processor/storage"
-	"github.com/datasets/task-processor/managers"
+	"github.com/datasets-org/task-processor/storage"
+	"github.com/datasets-org/task-processor/managers"
 	"fmt"
 )
 

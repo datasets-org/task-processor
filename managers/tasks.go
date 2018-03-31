@@ -1,8 +1,8 @@
 package managers
 
 import (
-	"github.com/datasets/task-processor/structs"
-	"github.com/datasets/task-processor/storage"
+	"github.com/datasets-org/task-processor/structs"
+	"github.com/datasets-org/task-processor/storage"
 )
 
 type Tasks struct {
