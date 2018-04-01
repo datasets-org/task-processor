@@ -13,6 +13,7 @@ type Task struct {
 	Message   string         `json:"message"`
 	Success   bool           `json:"success"`
 	Finished  timeutils.Time `json:"finished"`
+	Locked    bool           `json:"locked"`
 }
 
 func CreateTask() Task {

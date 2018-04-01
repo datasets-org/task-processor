@@ -5,29 +5,34 @@ import (
 	"fmt"
 	"github.com/datasets-org/task-processor/managers"
 	"time"
+	"errors"
 )
 
-func Process(task *structs.Task) {
+func Process(task *structs.Task, tm *managers.Tasks) {
 	var err error
+	message := ""
 	switch task.Task.Operation {
 	case "dummy":
-		err = dummyProcessor(*task)
+		err, message = dummyProcessor(*task)
 	default:
-		task.Complete(false, fmt.Sprintf("Uknown operation %s", task.Task.Operation))
+		err = errors.New(fmt.Sprintf("Unknown operation %s", task.Task.Operation))
 	}
 	if err == nil {
-		task.Complete(true, "")
+		task.Complete(true, message)
 	} else {
 		task.Complete(false, err.Error())
 	}
+	tm.Store(*task)
 }
 
-func Reactor(tm managers.Tasks) {
+func Reactor(tm *managers.Tasks) {
 	for {
 		for _, t := range tm.GetActiveTasks() {
-			// todo lock processed tasks
-			go Process(&t)
-			// todo store result (send via channel)
+			if !t.Locked {
+				t.Locked = true
+				tm.Store(t)
+				go Process(&t, tm)
+			}
 		}
 		time.Sleep(time.Second)
 	}
