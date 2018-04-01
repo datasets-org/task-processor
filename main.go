@@ -8,15 +8,16 @@ import (
 )
 
 func main() {
-	ms := storage.MapStorage{}
-	ms.Create()
+	ms := storage.CreateMapStorage()
 	ms.Put("0", `{"id": "ID-0", "created": "2018-04-01T13:07:59.1234", "completed": false}`)
 	t := managers.Tasks{Storage: ms}
 	for _, i := range t.GetActiveTasks() {
 		fmt.Println(i.Id)
 		fmt.Println(i.Completed)
-		i.Completed = true
 		v, _ := json.Marshal(i)
+		fmt.Println(string(v))
+		i.Complete(true, "ok")
+		v, _ = json.Marshal(i)
 		fmt.Println(string(v))
 	}
 }

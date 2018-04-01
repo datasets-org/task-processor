@@ -2,6 +2,7 @@ package structs
 
 import (
 	"github.com/simplereach/timeutils"
+	"time"
 )
 
 type Task struct {
@@ -19,4 +20,11 @@ func CreateTask() Task {
 	t.Created = t.Created.FormatMode(timeutils.RFC3339)
 	t.Finished = t.Finished.FormatMode(timeutils.RFC3339)
 	return t
+}
+
+func (t *Task) Complete(success bool, message string) {
+	t.Completed = true
+	t.Finished.Time = time.Now()
+	t.Message = message
+	t.Success = success
 }

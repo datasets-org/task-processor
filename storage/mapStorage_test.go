@@ -3,8 +3,7 @@ package storage
 import "testing"
 
 func TestMapStorage(t *testing.T) {
-	ms := MapStorage{}
-	ms.Create()
+	ms := CreateMapStorage()
 	items := ms.Items()
 	if len(items) > 0 {
 		t.Error("Storage not empty")

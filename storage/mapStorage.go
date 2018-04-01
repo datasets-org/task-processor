@@ -8,8 +8,10 @@ type MapStorage struct {
 	data map[string]string
 }
 
-func (ms *MapStorage) Create() {
+func CreateMapStorage() MapStorage {
+	ms := MapStorage{}
 	ms.data = make(map[string]string)
+	return ms
 }
 
 func (ms MapStorage) Put(key string, data string) {
