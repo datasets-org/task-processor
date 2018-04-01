@@ -15,6 +15,8 @@ func Process(task *structs.Task, tm *managers.Tasks) {
 	switch task.Task.Operation {
 	case "dummy":
 		err, message = dummyProcessor(*task)
+	case "scan":
+		err, message = scanProcessor(*task)
 	default:
 		glog.Infof(`Processing task %s - unknown operation (%s) params "%s"`, task.Id, task.Task.Operation,
 			task.Task.Params)
