@@ -9,7 +9,7 @@ type Task struct {
 	Id        string         `json:"id"`
 	Completed bool           `json:"completed"`
 	Created   timeutils.Time `json:"created"`
-	Task      string         `json:"task"`
+	Task      TaskDefinition `json:"task"`
 	Message   string         `json:"message"`
 	Success   bool           `json:"success"`
 	Finished  timeutils.Time `json:"finished"`
