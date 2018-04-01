@@ -6,6 +6,7 @@ import (
 	"github.com/datasets-org/task-processor/managers"
 	"time"
 	"errors"
+	"github.com/golang/glog"
 )
 
 func Process(task *structs.Task, tm *managers.Tasks) {
@@ -15,6 +16,8 @@ func Process(task *structs.Task, tm *managers.Tasks) {
 	case "dummy":
 		err, message = dummyProcessor(*task)
 	default:
+		glog.Infof(`Processing task %s - unknown operation (%s) params "%s"`, task.Id, task.Task.Operation,
+			task.Task.Params)
 		err = errors.New(fmt.Sprintf("Unknown operation %s", task.Task.Operation))
 	}
 	if err == nil {
