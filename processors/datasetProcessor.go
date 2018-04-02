@@ -6,6 +6,8 @@ import (
 	"path"
 	"github.com/datasets-org/task-processor/structs"
 	"io/ioutil"
+	"github.com/datasets-org/task-processor/managers"
+	"github.com/datasets-org/task-processor/storage"
 )
 
 func DatasetProcessor(dsPath string) error {
@@ -20,6 +22,9 @@ func DatasetProcessor(dsPath string) error {
 	}
 	err = yaml.Unmarshal(dat, &ds)
 	glog.Info(ds)
+	// todo param
+	datasets := managers.Datasets{Storage: storage.SyncMapStorage{}}
+	datasets.Store(ds)
 	if err != nil {
 		glog.Errorf("Dataset yaml malformed %s", err)
 		return err
