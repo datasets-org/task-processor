@@ -30,7 +30,7 @@ func TestTasks(t *testing.T) {
 	}
 	_, err := tasks.Get("-1")
 	if err == nil {
-		t.Error("Get for non existent ket passes")
+		t.Error("Get for non existent key passes")
 	}
 	task, err := tasks.Get("0")
 	if err != nil {
