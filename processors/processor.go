@@ -9,6 +9,8 @@ import (
 	"github.com/golang/glog"
 )
 
+const datasetFilename = "dataset.yaml"
+
 func Process(task *structs.Task, tm *managers.Tasks) {
 	var err error
 	message := ""
@@ -27,6 +29,7 @@ func Process(task *structs.Task, tm *managers.Tasks) {
 	} else {
 		task.Complete(false, err.Error())
 	}
+	task.Locked = false
 	tm.Store(*task)
 }
 

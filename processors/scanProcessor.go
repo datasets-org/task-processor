@@ -6,7 +6,12 @@ import (
 	"fmt"
 	"errors"
 	"encoding/json"
+	"path/filepath"
+	"path"
+	"os"
 )
+
+
 
 type params struct {
 	Fs   string `json:"Fs"`
@@ -21,7 +26,17 @@ func scanProcessor(task structs.Task) (error, string) {
 		glog.Error(e)
 		return errors.New(e), ""
 	}
-	glog.Infof("%s %s", p.Fs, p.Path)
+	switch p.Fs {
+	case "local":
+		scanFs(p.Path)
+	case "http":
+		scanHttp(p.Path)
+	default:
+		e := fmt.Sprintf("Unknown FS %s", p.Fs)
+		glog.Error(e)
+		return errors.New(e), ""
+	}
+
 	return nil, fmt.Sprintf(`Processed with scan processor and params "%s"`, task.Task.Params)
 }
 
@@ -34,4 +49,24 @@ func parseParams(param string) (params, error) {
 	} else {
 		return p, nil
 	}
+}
+
+func scanFs(scanPath string) {
+	err := filepath.Walk(scanPath, func(pth string, f os.FileInfo, err error) error {
+		if !f.IsDir() && f.Name() == datasetFilename {
+			dir, _ := path.Split(pth)
+			// todo add this info to task message
+			glog.Infof("Found dataset %s", pth)
+			go DatasetProcessor(dir)
+		}
+		return nil
+	})
+
+	if err != nil {
+		glog.Errorf("Directory scan failed %s", err)
+	}
+}
+
+func scanHttp(path string) {
+
 }
